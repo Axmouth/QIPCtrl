@@ -19,6 +19,7 @@ signals:
 
 public slots:
     void jumpIn();
+    void onTextChange();
 
 protected:
     virtual void focusInEvent(QFocusEvent *event);

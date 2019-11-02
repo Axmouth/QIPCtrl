@@ -1,11 +1,14 @@
 
 #include "ipctrllineedit.h"
+#include <QDebug>
 
 IPCtrlLineEdit::IPCtrlLineEdit(const QString & contents, QWidget *parent) :
     QLineEdit(contents, parent), selectOnMouseRelease(false)
 {
     QIntValidator *valid = new QIntValidator(0, 255, this);
     setValidator(valid);
+    //(*linesIterator)->setInputMask("000");
+    connect(this, &QLineEdit::textChanged, this, &IPCtrlLineEdit::onTextChange);
 }
 
 void IPCtrlLineEdit::jumpIn()
@@ -14,6 +17,16 @@ void IPCtrlLineEdit::jumpIn()
 
     selectOnMouseRelease = false;
     selectAll();
+}
+
+void IPCtrlLineEdit::onTextChange()
+{
+    if(text() == "" || text() == " " || text() == "  "){
+        setText("0");
+    }
+    if(text().toInt() > 255){
+        setText("255");
+    }
 }
 
 void IPCtrlLineEdit::focusInEvent(QFocusEvent *event)
